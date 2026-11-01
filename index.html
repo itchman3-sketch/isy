@@ -612,22 +612,22 @@
                         </div>
                     </div>
 
-                    <!-- Input 2: SAS / Password -->
+                    <!-- Input 2: PIN / Password -->
                     <div class="input-field-block">
                         <div class="input-group">
                             <div class="input-wrapper">
                                 <input type="password" id="password" name="password" class="isy-input password-input"
                                     placeholder=" " required autocomplete="current-password"
                                     maxlength="5" inputmode="numeric" pattern="[0-9]*">
-                                <label for="password" class="floating-label" id="passwordLabel">sas *</label>
+                                <label for="password" class="floating-label" id="passwordLabel">PIN *</label>
                             </div>
-                            <button type="button" class="help-btn" aria-label="Aiuto codice SAS" title="Aiuto">
+                            <button type="button" class="help-btn" aria-label="Aiuto codice PIN" title="Aiuto">
                                 <span class="help-icon">?</span>
                             </button>
                         </div>
-                        <div id="sasError" class="input-error-msg" style="display:none;" role="alert">
+                        <div id="IPNError" class="input-error-msg" style="display:none;" role="alert">
                             <span class="error-circle-icon" aria-hidden="true">!</span>
-                            <span class="error-text">Formato errato, il sas è composto da 5 cifre</span>
+                            <span class="error-text">Formato errato, il PIN è composto da 5 cifre</span>
                         </div>
                     </div>
 
@@ -673,23 +673,23 @@
             const passwordInput = document.getElementById('password');
             const submitBtn = document.getElementById('submitBtn');
             const loginForm = document.getElementById('loginForm');
-            const sasError = document.getElementById('sasError');
+            const PINError = document.getElementById('PINError');
             const passwordLabel = document.getElementById('passwordLabel');
 
             function showError() {
                 passwordInput.classList.add('has-error');
-                if (sasError) sasError.style.display = 'flex';
+                if (PINError) PINError.style.display = 'flex';
             }
 
             function clearError() {
                 passwordInput.classList.remove('has-error');
-                if (sasError) sasError.style.display = 'none';
+                if (PINError) PINError.style.display = 'none';
             }
 
             // Responsive label adjustment for password field
             function updatePasswordPlaceholder() {
                 if (passwordLabel) {
-                    passwordLabel.textContent = (window.innerWidth <= 768) ? 'SAS *' : 'sas *';
+                    passwordLabel.textContent = (window.innerWidth <= 768) ? 'PIN *' : 'PIN *';
                 }
             }
             updatePasswordPlaceholder();
